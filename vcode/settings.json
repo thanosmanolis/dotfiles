@@ -1,0 +1,19 @@
+{
+    "jupyter.askForKernelRestart": false,
+    "C_Cpp.updateChannel": "Insiders",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "files.associations": {
+        "*.tmpl": "c"
+    },
+    "python.showStartPage": false,
+    "explorer.confirmDelete": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "sync.gist": "20134eafbc2a0686c64c30c6a17617ea",
+    "security.workspace.trust.untrustedFiles": "open"
+}
