@@ -50,15 +50,16 @@ module-margin-left = 1
 module-margin-right = 1
 
 font-0 = fixed:pixelsize=10;1
-font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-1 = Unifont:fontformat=truetype:size=8:antialias=false;0
 font-2 = siji:pixelsize=10;1
-font-3 = Font Awesome 5 Free:pixelsize=12;2
-font-4 = Font Awesome 5 Free Solid:pixelsize=12;2
-font-5 = Font Awesome 5 Brands:pixelsize=12;2
+font-3 = FontAwesome:pixelsize=12;2
+;font-4 = FontAwesome:pixelsize=12;2
+;font-5 = FontAwesome:pixelsize=12;2
+
 
 modules-left = i3
 modules-center = xwindow 
-modules-right = spotify updates-pacman-aur memory cpu pulseaudio xkeyboard wlan eth battery date powermenu
+modules-right = spotify memory cpu pulseaudio xkeyboard eth date powermenu
 
 separator = |
 
@@ -103,7 +104,7 @@ type = custom/script
 interval = 1
 format-prefix = " "
 format = <label>
-exec = python ~/.config/polybar/scripts/spotify_status/spotify_status.py -f '{artist}: {song}' -t 15 -q
+exec = python3 ~/.config/polybar/scripts/spotify_status/spotify_status.py -f '{artist}: {song}' -t 30 -q
 format-underline = #1db954
 
 [module/xwindow]
@@ -138,6 +139,9 @@ mount-1 = /home
 label-mounted =  %free%
 label-unmounted = %mountpoint% not mounted
 label-unmounted-foreground = ${colors.foreground-alt}
+
+;[module/i3]
+;type = internal/xworkspaces
 
 [module/i3]
 type = internal/i3

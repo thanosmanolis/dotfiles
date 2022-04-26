@@ -2,6 +2,13 @@
 # ~/.bashrc
 #
 
+RED="\[\033[0;31m\]"
+YELLOW="\[\033[0;33m\]"
+GREEN="\[\033[0;32m\]"
+BLUE="\[\033[0;34m\]"
+MAGENTA="\[\033[0;35m\]"
+WHITE="\[\033[0;37m\]"
+
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -21,27 +28,51 @@ export HISTCONTROL=erasedups
 # Shortcuts
 stty werase ^H 	#Erase whole word with ctrl+Backspace
 
-# ESP8266 environment variables
-export PATH=$HOME/esp/xtensa-esp8266-elf/bin:$PATH
-export ESP8266_RTOS_SDK_DIR=$HOME/esp/ESP8266_RTOS_SDK 
-
-# ESP32 environment variables
-export PATH=$PATH:$HOME/esp/xtensa-esp32-elf/bin
-export ESP32_SDK_DIR=$HOME/esp/esp-idf
-
-# Alias for emqx
-alias emqx='/home/manolee/emqx-rel/_build/emqx/rel/emqx/bin/emqx'
-alias emqx_ctl='/home/manolee/emqx-rel/_build/emqx/rel/emqx/bin/emqx_ctl'
-alias emqx_conf='cd /home/manolee/emqx-rel/_build/emqx/rel/emqx/etc'
-
-# Alias for emqx-3.4.3
-alias emqx3='/home/manolee/emqx-3.4.3/_build/emqx/rel/emqx/bin/emqx'
-alias emqx3_ctl='/home/manolee/emqx-3.4.3/_build/emqx/rel/emqx/bin/emqx_ctl'
-alias emqx3_conf='cd /home/manolee/emqx-3.4.3/_build/emqx/rel/emqx/etc'
-
 # See last upgraded/installed packages
-alias last_upgraded='grep -i upgraded /var/log/pacman.log'
-alias last_installed='grep -i installed /var/log/pacman.log'
+alias last_upgraded='grep " upgrade " /var/log/dpkg.log'
+alias last_installed='grep " install " /var/log/dpkg.log'
 
 # Alias for ssh, so that it works with kitty terminal
 alias ssh="kitty +kitten ssh"
+
+# CUDA
+export PATH=$PATH:/usr/local/cuda/bin
+export LD_LIBRARY_PATH=/usr/local/cuda/lib
+
+# Git command autocompletion
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
+# enable bash completion in interactive shells
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1="$GREEN\u$RED-$BLUE\h$YELLOW\w\[\033[m\]$MAGENTA\$(__git_ps1)$WHITE \$ "
+    # PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
