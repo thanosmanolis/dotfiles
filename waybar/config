@@ -166,12 +166,7 @@
         "format-bluetooth-muted": "  {icon} ",
         "format-muted": "\uf6a9",
         "format-icons": {
-            "1": "\uf120",
-            "2": "\uf0ac",
-            "3": "\uf121",
-            "4": "\uf3b5",
-            "5": "\uf086",
-            "10": "\uf07b"
+            "default": ["\uf026", "\uf027", "\uf6a8", "\uf028"] 
         },
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     }
