@@ -1,0 +1,325 @@
+# Sway config — converted from i3
+# See https://swaywm.org/docs/sway/5/ for reference
+
+set $mod Mod4
+
+# Font for window titles
+font pango:Droid Sans Mono 10
+
+# Terminal
+set $term kitty
+
+# Fix touchpad tap not working
+input "type:touchpad" {
+    tap enabled
+    natural_scroll enabled
+    dwt enabled
+}
+
+# App launcher (dmenu replacement for Wayland)
+set $menu dmenu_path | dmenu | xargs swaymsg exec --
+
+# Display scaling (adjust if text is too small/large)
+output * scale 1.5
+
+# Display Wallpaper — update path to your wallpaper
+# One picture should be placed inside Pictures/Wallpaper
+# If zero of more than one, then fallback to solid color
+exec_always ~/.config/scripts/wallpaper.sh
+
+# ─── Input ────────────────────────────────────────────────────────────────────
+
+# Keyboard: switch between US and Greek with Alt+Shift
+input "type:keyboard" {
+    xkb_layout us,gr
+    xkb_options grp:alt_shift_toggle
+}
+
+# Disable focus following mouse
+focus_follows_mouse no
+
+# ─── Key Bindings ─────────────────────────────────────────────────────────────
+
+# Start terminal
+bindsym $mod+Return exec $term
+
+# Kill focused window
+bindsym --to-code $mod+Shift+q kill
+
+# App launcher
+bindsym $mod+d exec $menu
+
+# Reload config
+bindsym $mod+Shift+c reload
+
+# Restart Sway
+bindsym $mod+Shift+r exec swaymsg reload
+
+# Exit Sway
+bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit Sway?' -B 'Yes, exit' 'swaymsg exit'
+
+# Lock screen
+bindsym control+Mod1+l exec swaylock -f -c 000000
+
+# ─── Focus ────────────────────────────────────────────────────────────────────
+
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# ─── Move ─────────────────────────────────────────────────────────────────────
+
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# ─── Layout ───────────────────────────────────────────────────────────────────
+
+bindsym $mod+h splith
+bindsym $mod+v splitv
+
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+bindsym $mod+f fullscreen toggle
+
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+
+bindsym $mod+a focus parent
+
+# Drag floating windows with Mod + left mouse button
+floating_modifier $mod normal
+
+# ─── Workspaces ───────────────────────────────────────────────────────────────
+
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+# ─── Monitor / Workspace Assignment ──────────────────────────────────────────
+# Run 'swaymsg -t get_outputs' to find your output names
+# eDP-1 is usually the laptop screen, HDMI-A-1 replaces HDMI-1 in Sway
+
+workspace $ws1 output eDP-1
+workspace $ws2 output eDP-1
+workspace $ws3 output eDP-1
+workspace $ws4 output eDP-1
+workspace $ws5 output eDP-1
+workspace $ws6 output HDMI-A-1 eDP-1
+workspace $ws7 output HDMI-A-1 eDP-1
+workspace $ws8 output HDMI-A-1 eDP-1
+workspace $ws9 output HDMI-A-1 eDP-1
+workspace $ws10 output HDMI-A-1 eDP-1
+
+# ─── App → Workspace Assignments ─────────────────────────────────────────────
+# Note: Sway uses app_id for native Wayland apps, class for XWayland apps
+
+assign [app_id="kitty"] $ws1
+assign [app_id="firefox"] $ws2
+assign [app_id="code"] $ws3
+assign [app_id="^brave-"] $ws4
+assign [app_id="brave-browser"] $ws4
+assign [app_id="signal"] $ws5
+assign [app_id="teams-for-linux"] $ws5
+assign [class="Thunderbird"] $ws8
+assign [class="TeXstudio"] $ws8
+assign [class="qpdfview"] $ws9
+assign [app_id="thunar"] $ws10
+
+# Disable floating for all windows
+for_window [class=".*"] floating disable
+for_window [app_id=".*"] floating disable
+
+# ─── App Shortcuts ────────────────────────────────────────────────────────────
+
+bindsym $mod+Control+f exec firefox
+bindsym $mod+Control+v exec code
+bindsym $mod+Control+s exec signal-desktop
+bindsym $mod+Control+t exec thunderbird
+bindsym $mod+Control+b exec brave
+bindsym $mod+Control+m exec brave --app=https://soundcloud.com
+bindsym $mod+Control+y exec brave --app=https://youtube.com
+bindsym $mod+Control+q exec qbittorrent
+
+# ─── Window Appearance ────────────────────────────────────────────────────────
+
+# No titlebars, just borders
+default_border pixel 2
+
+# Gaps
+gaps inner 5
+gaps outer 2
+smart_borders off
+
+# Window Colors
+set $bgcolor    #00897b33
+set $ibgcolor   #363636
+set $fws        #00897b80
+set $textcolor  #ffffff
+set $itextcolor #969696
+set $ubgcolor   #ff0000
+
+#                       border      background  text        indicator   child_border
+client.focused          $bgcolor    $bgcolor    $textcolor  $bgcolor    $bgcolor
+client.unfocused        $ibgcolor   $ibgcolor   $itextcolor $ibgcolor   $ibgcolor
+client.focused_inactive $ibgcolor   $ibgcolor   $itextcolor $ibgcolor   $ibgcolor
+client.urgent           $ubgcolor   $ubgcolor   $textcolor  $ubgcolor   $ubgcolor
+
+# ─── Audio ────────────────────────────────────────────────────────────────────
+
+bindsym XF86AudioRaiseVolume exec ~/.config/scripts/volume_up_with_limit.sh
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+# ─── Media Controls (Spotify) ─────────────────────────────────────────────────
+
+bindsym XF86AudioPlay exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
+bindsym XF86AudioPrev exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
+bindsym XF86AudioNext exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+bindsym XF86AudioStop exec dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop
+
+# ─── Brightness ───────────────────────────────────────────────────────────────
+# Requires brightnessctl: sudo pacman -S brightnessctl
+
+bindsym XF86MonBrightnessUp exec brightnessctl set +5%
+bindsym XF86MonBrightnessDown exec brightnessctl set 5%-
+
+# ─── Screenshots ──────────────────────────────────────────────────────────────
+# Requires: grim, slurp, wl-clipboard
+
+# Select area → save to file
+bindsym Print exec grim -g "$(slurp)" ~/Pictures/Screenshot-$(date -Iseconds | cut -d'+' -f1).png
+
+# Select area → copy to clipboard
+bindsym $mod+Print exec grim -g "$(slurp)" - | wl-copy
+
+# ─── Resize Mode ──────────────────────────────────────────────────────────────
+
+mode "resize" {
+    bindsym j resize shrink width 10px
+    bindsym k resize grow height 10px
+    bindsym l resize shrink height 10px
+    bindsym semicolon resize grow width 10px
+
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# ─── Gap Mode ─────────────────────────────────────────────────────────────────
+
+set $mode_gaps Gaps: (o) outer, (i) inner
+set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+
+bindsym $mod+Shift+g mode "$mode_gaps"
+
+mode "$mode_gaps" {
+    bindsym o mode "$mode_gaps_outer"
+    bindsym i mode "$mode_gaps_inner"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+mode "$mode_gaps_inner" {
+    bindsym plus  gaps inner current plus 5
+    bindsym minus gaps inner current minus 5
+    bindsym 0     gaps inner current set 0
+    bindsym Shift+plus  gaps inner all plus 5
+    bindsym Shift+minus gaps inner all minus 5
+    bindsym Shift+0     gaps inner all set 0
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+mode "$mode_gaps_outer" {
+    bindsym plus  gaps outer current plus 5
+    bindsym minus gaps outer current minus 5
+    bindsym 0     gaps outer current set 0
+    bindsym Shift+plus  gaps outer all plus 5
+    bindsym Shift+minus gaps outer all minus 5
+    bindsym Shift+0     gaps outer all set 0
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+# ─── Autostart ────────────────────────────────────────────────────────────────
+
+exec_always nm-applet --indicator
+exec --no-startup-id blueman-applet
+exec $term
+exec firefox
+exec thunar
+
+# Notification daemon
+exec mako
+
+# ─── Bar ──────────────────────────────────────────────────────────────────────
+# Using waybar — configure at ~/.config/waybar/config
+# If you don't have waybar yet, uncomment the built-in bar below:
+
+bar {
+    swaybar_command waybar
+}
+
+# Built-in bar (fallback, comment out if using waybar):
+# bar {
+#     position top
+#     status_command while date +'%Y-%m-%d %H:%M'; do sleep 1; done
+#     colors {
+#         statusline #ffffff
+#         background #00897b1a
+#         focused_workspace #00897b80 #00897b80 #ffffff
+#         inactive_workspace #363636 #363636 #969696
+#     }
+# }
+
+

@@ -1,0 +1,231 @@
+// -*- mode: jsonc -*-
+[{
+    "output": ["eDP-1", "eDP-2"],
+    // "layer": "top", // Waybar at top layer
+    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "height": 24, // Waybar height (to be removed for auto height)
+    // "width": 1280, // Waybar width
+    "spacing": 4, // Gaps between modules (4px)
+    // Choose the order of the modules
+    "modules-left": [
+        "sway/workspaces",
+        "sway/window",
+        "cava",
+        "sway/mode",
+        "sway/scratchpad"
+    ],
+    "modules-center": [
+    ],
+    "modules-right": [
+        "mpris",
+        "idle_inhibitor",
+        "memory",
+        "cpu",
+        "custom/pacman-updates",
+	    "custom/aur-updates",
+        "wireplumber",
+        "backlight",
+        "clock",
+        "battery",
+        "sway/language",
+        "tray"
+    ],
+    // Modules configuration
+    "sway/workspaces": {
+        "all-outputs": true,
+        "warp-on-scroll": false,
+        "enable-bar-scroll": true,
+        "disable-scroll-wraparound": true,
+        "format": "{icon}",
+        "format-icons": {
+            "1": "\uf120",
+            "2": "\uf0ac",
+            "3": "\uf121",
+            "4": "\uf3b5",
+            "5": "\uf086",
+            "10": "\uf07b"
+        }
+    },
+    "sway/window": {
+        "format": "{title}",
+        "max-length": 25,
+        "all-outputs": true
+    },
+    "cava": {
+	//        "cava_config": "$XDG_CONFIG_HOME/cava/cava.conf",
+	"framerate": 30,
+	"autosens": 1,
+	"bars": 14,
+	"lower_cutoff_freq": 50,
+	"higher_cutoff_freq": 10000,
+	"method": "pipewire",
+	"source": "auto",
+	"stereo": true,
+	"bar_delimiter": 0,
+	"noise_reduction": 0.77,
+	"input_delay": 2,
+        "hide_on_silence": true,
+	"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" ],
+	"actions": {
+	    "on-click-right": "mode"
+	}
+    },
+    "mpris": {
+ 	"format": "{status_icon} {dynamic}",
+        "interval": 1,
+        "dynamic-len": 40,
+	"status-icons": {
+		"playing": "\uf04b",
+		"paused": "\uf04c",
+		"stopped": "\uf04d"
+	},
+	"dynamic-order": ["title", "artist"],
+	"ignored-players": ["firefox"]
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "",
+            "deactivated": ""
+        }
+    },
+    "custom/pacman-updates": {
+        "exec": "checkupdates 2>/dev/null | wc -l || echo 0",
+        "interval": 3600,
+        "format": "\uf303 {}",
+        "on-click": "kitty -e bash -c 'sudo pacman -Syu; exec bash'"
+    },
+    "custom/aur-updates": {
+        "exec": "paru -Qua 2>/dev/null | wc -l || echo 0",
+        "interval": 3600,
+        "format": "\uf01e {}",
+        "on-click": "kitty -e bash -c 'paru -Sua; exec bash'"
+    },
+    "sway/language": {
+        "format": "\uf11c {}",
+        "tooltip": false
+    },
+    "sway/mode": {
+        "format": "{}"
+    },
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", ""],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+    "tray": {
+        "icon-size": 14,
+        "spacing": 10
+    },
+    "memory": {
+        "format": "\uf538 {}%"
+    },
+    "cpu": {
+        "format": "\uf2db {}%",
+         "tooltip": false
+    },
+    "clock": {
+        // "timezone": "America/New_York",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%Y-%m-%d}"
+    },
+    "temperature": {
+        // "thermal-zone": 2,
+        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+        "critical-threshold": 80,
+        // "format-critical": "{temperatureC}°C {icon}",
+        "format": "{temperatureC}°C {icon}",
+        "format-icons": ["", "", ""]
+    },
+    "backlight": {
+        // "device": "acpi_video1",
+        "format": "{icon} {percent}%",
+        "format-icons": ["", "", "", "", "", "", "", "", ""]
+    },
+    "battery": {
+        "states": {
+            // "good": 95,
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{icon} {capacity}%",
+        "format-full": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": "\uf1e6 {capacity}%",
+        "format-alt": "{icon} {time}",
+        // "format-good": "", // An empty format will hide the module
+        // "format-full": "",
+        "format-icons": ["", "", "", "", ""]
+    },
+    "wireplumber": {
+        "scroll-step": 5, // %, can be a float
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{icon} {volume}% ",
+        "format-bluetooth-muted": "  {icon} ",
+        "format-muted": "\uf6a9",
+        "format-icons": {
+            "1": "\uf120",
+            "2": "\uf0ac",
+            "3": "\uf121",
+            "4": "\uf3b5",
+            "5": "\uf086",
+            "10": "\uf07b"
+        },
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    }
+},{
+    "output": ["HDMI-A-1"],
+    // "layer": "top", // Waybar at top layer
+    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "height": 24, // Waybar height (to be removed for auto height)
+    // "width": 1280, // Waybar width
+    "spacing": 4, // Gaps between modules (4px)
+    // Choose the order of the modules
+    "modules-left": [
+        "sway/workspaces",
+        "sway/mode",
+        "sway/scratchpad"
+    ],
+    "modules-center": [
+        "clock"
+    ],
+    "modules-right": [
+        "sway/window"
+    ],
+    "sway/workspaces": {
+        "all-outputs": true,
+        "warp-on-scroll": true,
+        "enable-bar-scroll": true,
+        "format": "{icon}",
+        "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "\uf001",
+            "5": "",
+            "10": ""
+        }
+},
+    "sway/window": {
+        "format": "{title}",
+        "max-length": 40,
+        "all-outputs": true
+    },
+    "sway/mode": {
+        "format": "{}"
+    },
+    "sway/scratchpad": {
+        "format": "{icon} {count}",
+        "show-empty": false,
+        "format-icons": ["", ""],
+        "tooltip": true,
+        "tooltip-format": "{app}: {title}"
+    },
+    "clock": {
+        // "timezone": "America/New_York",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "{:%Y-%m-%d}"
+    }
+}]
