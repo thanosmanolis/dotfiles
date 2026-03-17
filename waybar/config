@@ -49,7 +49,7 @@
     },
     "sway/window": {
         "format": "{title}",
-        "max-length": 25,
+        "max-length": 20,
         "all-outputs": true,
         "rewrite": {
             "(.*)YouTube(.*)": "~",
