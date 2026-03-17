@@ -1,6 +1,6 @@
 #!/bin/bash
 
-WALLPAPER_DIR="$HOME/Pictures/Wallpaper"
+WALLPAPER_DIR="$HOME/Pictures/System/Wallpaper"
 COUNT=$(ls "$WALLPAPER_DIR" 2>/dev/null | wc -l)
 
 if [ "$COUNT" -eq 0 ]; then

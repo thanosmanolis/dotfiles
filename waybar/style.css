@@ -100,11 +100,21 @@ button:hover {
 #cpu,
 #language,
 #custom-pacman-updates,
-#custom-aur-updates{
+#custom-aur-updates,
+#custom-power{
     padding: 0 5px;
     background-color: #282828;
     color: #ebdbb2;
 }
+
+/*#window:empty{
+    background: transparent;
+    color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
+}*/
 
 #mode {
     background-color: #689d6a;

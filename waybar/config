@@ -1,6 +1,6 @@
 // -*- mode: jsonc -*-
 [{
-    "output": ["eDP-1", "eDP-2"],
+    "output": ["eDP-1","HDMI-A-1"],
     // "layer": "top", // Waybar at top layer
     // "position": "bottom", // Waybar position (top|bottom|left|right)
     "height": 24, // Waybar height (to be removed for auto height)
@@ -28,7 +28,8 @@
         "clock",
         "battery",
         "sway/language",
-        "tray"
+        "tray",
+        "custom/power"
     ],
     // Modules configuration
     "sway/workspaces": {
@@ -49,7 +50,11 @@
     "sway/window": {
         "format": "{title}",
         "max-length": 25,
-        "all-outputs": true
+        "all-outputs": true,
+        "rewrite": {
+            "(.*)YouTube(.*)": "~",
+            "(.*)SoundCloud(.*)": "~"
+        }
     },
     "cava": {
 	//        "cava_config": "$XDG_CONFIG_HOME/cava/cava.conf",
@@ -71,13 +76,13 @@
 	}
     },
     "mpris": {
- 	"format": "{status_icon} {dynamic}",
-        "interval": 1,
-        "dynamic-len": 40,
-	"status-icons": {
-		"playing": "\uf04b",
-		"paused": "\uf04c",
-		"stopped": "\uf04d"
+ 	    "format": "{status_icon} {dynamic}",
+            "interval": 1,
+            "dynamic-len": 30,
+	    "status-icons": {
+		    "playing": "\uf04b",
+		    "paused":  "\uf04c",
+		    "stopped": "\uf04d"
 	},
 	"dynamic-order": ["title", "artist"],
 	"ignored-players": ["firefox"]
@@ -90,19 +95,25 @@
         }
     },
     "custom/pacman-updates": {
-        "exec": "checkupdates 2>/dev/null | wc -l || echo 0",
+        "exec": "sleep 5 && checkupdates 2>/dev/null | wc -l",
         "interval": 3600,
         "format": "\uf303 {}",
         "on-click": "kitty -e bash -c 'sudo pacman -Syu; exec bash'"
     },
     "custom/aur-updates": {
-        "exec": "paru -Qua 2>/dev/null | wc -l || echo 0",
+        "exec": "sleep 5 && paru -Qua 2>/dev/null | wc -l",
         "interval": 3600,
         "format": "\uf01e {}",
         "on-click": "kitty -e bash -c 'paru -Sua; exec bash'"
     },
+    "custom/power": {
+	    "format": "\uf011",
+	    "on-click": "swaynag -t warning -m 'Power Menu Options' -b 'Shutdown'  'shutdown -h now' -b 'Restart' 'shutdown -r now' -b 'Logout' 'swaymsg exit' -b 'Hibernate' 'systemctl hibernate' --background=#005566 --button-background=#009999 --button-border=#002b33 --border-bottom=#002b33"
+    },
     "sway/language": {
         "format": "\uf11c {}",
+        "min-length": 5,
+        "max-length": 5,
         "tooltip": false
     },
     "sway/mode": {
@@ -169,58 +180,5 @@
             "default": ["\uf026", "\uf027", "\uf6a8", "\uf028"] 
         },
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-    }
-},{
-    "output": ["HDMI-A-1"],
-    // "layer": "top", // Waybar at top layer
-    // "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 24, // Waybar height (to be removed for auto height)
-    // "width": 1280, // Waybar width
-    "spacing": 4, // Gaps between modules (4px)
-    // Choose the order of the modules
-    "modules-left": [
-        "sway/workspaces",
-        "sway/mode",
-        "sway/scratchpad"
-    ],
-    "modules-center": [
-        "clock"
-    ],
-    "modules-right": [
-        "sway/window"
-    ],
-    "sway/workspaces": {
-        "all-outputs": true,
-        "warp-on-scroll": true,
-        "enable-bar-scroll": true,
-        "format": "{icon}",
-        "format-icons": {
-            "1": "",
-            "2": "",
-            "3": "",
-            "4": "\uf001",
-            "5": "",
-            "10": ""
-        }
-},
-    "sway/window": {
-        "format": "{title}",
-        "max-length": 40,
-        "all-outputs": true
-    },
-    "sway/mode": {
-        "format": "{}"
-    },
-    "sway/scratchpad": {
-        "format": "{icon} {count}",
-        "show-empty": false,
-        "format-icons": ["", ""],
-        "tooltip": true,
-        "tooltip-format": "{app}: {title}"
-    },
-    "clock": {
-        // "timezone": "America/New_York",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%Y-%m-%d}"
     }
 }]

@@ -14,16 +14,19 @@ input "type:touchpad" {
     tap enabled
     natural_scroll enabled
     dwt enabled
+    drag enabled
+    drag_lock disabled
 }
 
 # App launcher (dmenu replacement for Wayland)
-set $menu dmenu_path | dmenu | xargs swaymsg exec --
+#set $menu dmenu_path | dmenu | xargs swaymsg exec --
+set $menu j4-dmenu-desktop --term=kitty
 
 # Display scaling (adjust if text is too small/large)
 output * scale 1.5
 
 # Display Wallpaper — update path to your wallpaper
-# One picture should be placed inside Pictures/Wallpaper
+# One picture should be placed inside Pictures/System/Wallpaper
 # If zero of more than one, then fallback to solid color
 exec_always ~/.config/scripts/wallpaper.sh
 
@@ -56,10 +59,13 @@ bindsym --to-code $mod+Shift+c reload
 bindsym --to-code $mod+Shift+r exec swaymsg reload
 
 # Exit Sway
-bindsym --to-code $mod+Shift+e exec swaynag -t warning -m 'Exit Sway?' -B 'Yes, exit' 'swaymsg exit'
-
+#bindsym --to-code $mod+Shift+e exec swaynag -t warning -m 'Exit Sway?' -B 'Yes, exit' 'swaymsg exit'
+#bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit Sway?' -B 'Yes' 'swaymsg exit'
+#bindsym --to-code $mod+Shift+e exec ~/.config/scripts/exit-sway.sh
+bindsym $mod+Shift+e exec swaymsg exit
 # Lock screen
-bindsym --to-code control+Mod1+l exec swaylock -f -c 000000
+bindsym --to-code control+Mod1+l exec swaylock --clock --indicator --screenshots --effect-scale 0.2 --effect-vignette 0.3:0.8\
+                                               --effect-blur 2x1 --datestr "%a %e.%m.%Y" --timestr "%k:%M"
 
 # ─── Focus ────────────────────────────────────────────────────────────────────
 
@@ -165,6 +171,7 @@ assign [app_id="^brave-"] $ws4
 assign [app_id="brave-browser"] $ws4
 assign [app_id="signal"] $ws5
 assign [app_id="teams-for-linux"] $ws5
+assign [app_id="com.stremio.stremio"] $ws6
 assign [class="Thunderbird"] $ws8
 assign [class="TeXstudio"] $ws8
 assign [class="qpdfview"] $ws9
@@ -323,4 +330,21 @@ bar {
 #     }
 # }
 
+# ─── Idle Mode ────────────────────────────────────────────────────────────────
+#exec swayidle -w \
+#    timeout 10 'swaymsg "output * dpms off"' \
+#    resume 'swaymsg "output * dpms on"' \
+#    timeout 20 'swaylock --clock --indicator --screenshots --effect-scale 0.2 --effect-vignette 0.3:0.8 \
+#                                               --effect-blur 2x1 --datestr "%a %e.%m.%Y" --timestr "%k:%M"' \
+#    timeout 30 'systemctl suspend' \
+#    before-sleep 'swaylock --clock --indicator --screenshots --effect-scale 0.2 --effect-vignette 0.3:0.8 \
+#                                               --effect-blur 2x1 --datestr "%a %e.%m.%Y" --timestr "%k:%M"'
 
+exec swayidle -w \
+    timeout 570 'swaymsg "output * dpms off"' \
+    resume 'swaymsg "output * dpms on"' \
+    timeout 600 'swaylock -f --clock --indicator --screenshots --effect-scale 0.2 --effect-vignette 0.3:0.8 \
+                             --effect-blur 2x1 --datestr "%a %e.%m.%Y" --timestr "%k:%M"' \
+    timeout 660 'systemctl suspend' \
+    before-sleep 'swaylock -f --clock --indicator --screenshots --effect-scale 0.2 --effect-vignette 0.3:0.8 \
+                              --effect-blur 2x1 --datestr "%a %e.%m.%Y" --timestr "%k:%M"'

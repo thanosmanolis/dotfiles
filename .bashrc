@@ -15,9 +15,9 @@ WHITE="\[\033[0;37m\]"
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
-# Execute neofetch
-neofetch
-
+# Execute fastfetch
+fastfetch --logo ~/.config/fastfetch/logos/anarchy.txt
+#fastfetch
 # Set favourite editor
 export EDITOR="vim"
 export VISUAL="vim"
@@ -29,17 +29,25 @@ export HISTCONTROL=erasedups
 stty werase ^H 	#Erase whole word with ctrl+Backspace
 
 # See last upgraded/installed packages
-alias last_upgraded='grep " upgrade " /var/log/dpkg.log'
-alias last_installed='grep " install " /var/log/dpkg.log'
+last_installed() {
+    if [ -z "$1" ]; then
+        grep "installed" /var/log/pacman.log
+    else
+        grep "installed" /var/log/pacman.log | tail -$1
+    fi
+}
 
-# Alias for ssh, so that it works with kitty terminal
-alias ssh="kitty +kitten ssh"
-
-# CUDA
-export PATH=$PATH:/usr/local/cuda/bin
-export LD_LIBRARY_PATH=/usr/local/cuda/lib
+last_upgraded() {
+    if [ -z "$1" ]; then
+        grep "upgraded" /var/log/pacman.log
+    else
+        grep "upgraded" /var/log/pacman.log | tail -$1
+    fi
+}
 
 # Git command autocompletion
+source /usr/share/git/completion/git-prompt.sh
+
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
@@ -76,3 +84,18 @@ else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
+
+# ------ Alias -------------------------------------------------------
+# See if app needs "class" or "app_id" in sway config
+alias is_appid="swaymsg -t get_tree | grep app_id"
+
+# Alias for ssh, so that it works with kitty terminal
+alias ssh="kitty +kitten ssh"
+
+# Apps alias
+alias stremio="flatpak run com.stremio.Stremio"
+alias teams="teams-for-linux --enable-features=WebRTCPipeWireCapturer"
+alias weasis="~/.local/bin/weasis"
+
+# Update dotfiles
+alias update_dotfiles="~/.config/scripts/update_dotfiles.sh"
