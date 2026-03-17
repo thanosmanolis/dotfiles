@@ -18,8 +18,15 @@ for config_dir in "$CONFIG"/*/; do
     dotfiles_dir="$DOTFILES/$folder_name"
 
     if [ -d "$dotfiles_dir" ]; then
-        cp -r "$config_dir"* "$dotfiles_dir/" 2>/dev/null
-        echo -e "  ${GREEN}✔${NC} $folder_name"
+        if [ "$folder_name" = "Code" ]; then
+            mkdir -p "$dotfiles_dir/User"
+            cp "$CONFIG/Code/User/settings.json" "$dotfiles_dir/" 2>/dev/null
+            cp "$CONFIG/Code/User/keybindings.json" "$dotfiles_dir/" 2>/dev/null
+            echo -e "  ${GREEN}✔${NC} Code (settings + keybindings only)"
+        else
+            cp -r "$config_dir"* "$dotfiles_dir/" 2>/dev/null
+            echo -e "  ${GREEN}✔${NC} $folder_name"
+        fi
     else
         echo -e "  ${YELLOW}–${NC} $folder_name (not in dotfiles, skipping)"
     fi
