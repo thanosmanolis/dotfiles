@@ -16,11 +16,15 @@ alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
 # Execute fastfetch
-fastfetch --logo ~/.config/fastfetch/logos/anarchy.txt
-#fastfetch
+#fastfetch --logo ~/.config/fastfetch/logos/anarchy.txt
+fastfetch
+
 # Set favourite editor
 export EDITOR="vim"
 export VISUAL="vim"
+
+# Set system default theme as dark
+GTK_THEME=Adwaita:dark
 
 # Erase duplicates on history
 export HISTCONTROL=erasedups

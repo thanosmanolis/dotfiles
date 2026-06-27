@@ -23,12 +23,16 @@ input "type:touchpad" {
 set $menu j4-dmenu-desktop --term=kitty
 
 # Display scaling (adjust if text is too small/large)
-output * scale 1.5
+output eDP-1 scale 1.5
 
 # Display Wallpaper — update path to your wallpaper
 # One picture should be placed inside Pictures/System/Wallpaper
 # If zero of more than one, then fallback to solid color
 exec_always ~/.config/scripts/wallpaper.sh
+
+# Set default system theme as dark
+exec_always gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+exec_always --no-startup-id dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY
 
 # ─── Input ────────────────────────────────────────────────────────────────────
 
@@ -149,16 +153,16 @@ bindsym --to-code $mod+Shift+0 move container to workspace number $ws10
 # Run 'swaymsg -t get_outputs' to find your output names
 # eDP-1 is usually the laptop screen, HDMI-A-1 replaces HDMI-1 in Sway
 
-workspace $ws1 output eDP-1
-workspace $ws2 output eDP-1
-workspace $ws3 output eDP-1
-workspace $ws4 output eDP-1
-workspace $ws5 output eDP-1
-workspace $ws6 output HDMI-A-1 eDP-1
-workspace $ws7 output HDMI-A-1 eDP-1
-workspace $ws8 output HDMI-A-1 eDP-1
-workspace $ws9 output HDMI-A-1 eDP-1
-workspace $ws10 output HDMI-A-1 eDP-1
+workspace $ws1 output eDP-1 "Samsung Electric Company LF24T370F H4LT600179"
+workspace $ws2 output "Samsung Electric Company LF24T370F H4LT600179" eDP-1
+workspace $ws3 output "Samsung Electric Company LF24T370F H4LT600179" eDP-1
+workspace $ws4 output "Samsung Electric Company LF24T370F H4LT600179" eDP-1
+workspace $ws5 output "Samsung Electric Company LF24T370F H4LT600179" eDP-1
+workspace $ws6 output HDMI-A-1 eDP-1 "Samsung Electric Company LF24T370F H4LT600179"
+workspace $ws7 output HDMI-A-1 eDP-1 "Samsung Electric Company LF24T370F H4LT600179"
+workspace $ws8 output HDMI-A-1 eDP-1 "Samsung Electric Company LF24T370F H4LT600179"
+workspace $ws9 output  HDMI-A-1 eDP-1 "Samsung Electric Company LF24T370F H4LT600179"
+workspace $ws10 output HDMI-A-1 eDP-1 "Samsung Electric Company LF24T370F H4LT600179"
 
 # ─── App → Workspace Assignments ─────────────────────────────────────────────
 # Note: Sway uses app_id for native Wayland apps, class for XWayland apps
@@ -187,9 +191,9 @@ bindsym --to-code $mod+Control+f exec firefox
 bindsym --to-code $mod+Control+v exec code
 bindsym --to-code $mod+Control+s exec signal-desktop
 bindsym --to-code $mod+Control+t exec thunderbird
-bindsym --to-code $mod+Control+b exec brave
-bindsym --to-code $mod+Control+m exec brave --app=https://soundcloud.com
-bindsym --to-code $mod+Control+y exec brave --app=https://youtube.com
+bindsym --to-code $mod+Control+b exec brave --password-store=basic
+bindsym --to-code $mod+Control+m exec brave --password-store=basic --app=https://soundcloud.com
+bindsym --to-code $mod+Control+y exec brave --password-store=basic --app=https://youtube.com
 bindsym --to-code $mod+Control+q exec qbittorrent
 
 # ─── Window Appearance ────────────────────────────────────────────────────────
@@ -301,14 +305,14 @@ mode "$mode_gaps_outer" {
 
 # ─── Autostart ────────────────────────────────────────────────────────────────
 
-exec_always nm-applet --indicator
-exec --no-startup-id blueman-applet
+exec_always --no-startup-id nm-applet --indicator
+exec_always --no-startup-id blueman-applet
+exec_always --no-startup-id mako
+exec_always --no-startup-id ~/.config/scripts/vpn-start.sh
+exec --no-startup-id sudo tzupdate
 exec $term
 exec firefox
 exec thunar
-
-# Notification daemon
-exec mako
 
 # ─── Bar ──────────────────────────────────────────────────────────────────────
 # Using waybar — configure at ~/.config/waybar/config
@@ -331,14 +335,6 @@ bar {
 # }
 
 # ─── Idle Mode ────────────────────────────────────────────────────────────────
-#exec swayidle -w \
-#    timeout 10 'swaymsg "output * dpms off"' \
-#    resume 'swaymsg "output * dpms on"' \
-#    timeout 20 'swaylock --clock --indicator --screenshots --effect-scale 0.2 --effect-vignette 0.3:0.8 \
-#                                               --effect-blur 2x1 --datestr "%a %e.%m.%Y" --timestr "%k:%M"' \
-#    timeout 30 'systemctl suspend' \
-#    before-sleep 'swaylock --clock --indicator --screenshots --effect-scale 0.2 --effect-vignette 0.3:0.8 \
-#                                               --effect-blur 2x1 --datestr "%a %e.%m.%Y" --timestr "%k:%M"'
 
 exec swayidle -w \
     timeout 570 'swaymsg "output * dpms off"' \
@@ -348,3 +344,8 @@ exec swayidle -w \
     timeout 660 'systemctl suspend' \
     before-sleep 'swaylock -f --clock --indicator --screenshots --effect-scale 0.2 --effect-vignette 0.3:0.8 \
                               --effect-blur 2x1 --datestr "%a %e.%m.%Y" --timestr "%k:%M"'
+
+# ─── Extra Monitor ────────────────────────────────────────────────────────────
+output HDMI-A-1 resolution 1920x1080 position 1920,0
+output eDP-1 position 0,0
+output "Samsung Electric Company LF24T370F H4LT600179" position 1280,0 scale 1.25
